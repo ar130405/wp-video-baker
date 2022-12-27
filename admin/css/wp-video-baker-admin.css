@@ -1,0 +1,22 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+ 
+.csf-section .chosen-container {
+ width:300px !important; 
+}
+.csf-field-notice.apikeynotice {
+	display:block !important;
+}
+#videobaker_post {
+	background:#10393B;
+	padding: 0 50px 50px 50px;
+}
+#poststuff h2 {
+	color:white !important; 
+	font-size:25px; 
+}
+#poststuff .inside {
+	background: white;
+}
