@@ -282,12 +282,22 @@ if ( ! class_exists( 'CSF_Options' ) ) {
 
         if ( ! $ajax && ! empty( $response[ 'csf_import_data' ] ) ) {
 
-          // XSS ok.
-          // No worries, This "POST" requests is sanitizing in the below foreach. see #L337 - #L341
-          $import_data  = json_decode( wp_unslash( trim( $response[ 'csf_import_data' ] ) ), true );
-          $options      = ( is_array( $import_data ) && ! empty( $import_data ) ) ? $import_data : array();
-          $importing    = true;
-          $this->notice = esc_html__( 'Settings successfully imported.', 'csf' );
+			$options = get_option( 'video_baker_admin' );
+
+			// XSS ok.
+			// No worries, This "POST" requests is sanitizing in the below foreach. see #L337 - #L341
+			$import_data  = json_decode( wp_unslash( trim( $response[ 'csf_import_data' ] ) ), true );
+
+
+			foreach($options as $key => $value){
+				if(isset($import_data[$key])){
+					$options[$key] = $import_data[$key];
+				}
+			}
+
+			$options      = ( is_array( $options ) && ! empty($options) ) ? $options : array();
+			$importing    = true;
+			$this->notice = esc_html__( 'Settings successfully imported.', 'csf' );
 
         }
 

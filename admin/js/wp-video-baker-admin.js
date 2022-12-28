@@ -87,7 +87,10 @@
 		if($('#preview_iframe').length){
 			show_preview();
 		}
+		
 	});
+
+
 
 })( jQuery );
 

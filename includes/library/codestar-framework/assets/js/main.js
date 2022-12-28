@@ -477,8 +477,9 @@
   // Field: backup
   //
   $.fn.csf_field_backup = function() {
-    return this.each( function() {
 
+    return this.each( function() {
+	
       if ( window.wp.customize === undefined ) { return; }
 
       var base    = this,

@@ -125,6 +125,14 @@ class Wp_Video_Baker {
 		 * side of the site.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wp-video-baker-public.php';
+		
+		/**
+		 * Codestar functions
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/functions/functions.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/functions/admin-options.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/functions/post-options.php';
+		
 
 		$this->loader = new Wp_Video_Baker_Loader();
 

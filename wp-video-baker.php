@@ -9,14 +9,14 @@
  * that starts the plugin.
  *
  * @link              https://wpvideobaker.com
- * @since             1.0.0
+ * @since             1.0
  * @package           Wp_Video_Baker
  *
  * @wordpress-plugin
  * Plugin Name:       WPVideoBaker
  * Plugin URI:        https://wpvideobaker.com
  * Description:       WPVideoBaker allows you to quickly and easily convert blog posts into stunning videos. It will break down any blog post into separate video sections, and automatically generate voice-over to accompany the visual content. All you have to do is add images to the video sections, and the plugin takes care of the rest. 
- * Version:           1.0.0
+ * Version:           1.0
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       wp-video-baker
@@ -30,10 +30,10 @@ if ( ! defined( 'WPINC' ) ) {
 
 /**
  * Currently plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
+ * Start at version 1.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'WP_VIDEO_BAKER_VERSION', '1.0.0' );
+define( 'WP_VIDEO_BAKER_VERSION', '1.0' );
 
 /**
  * The code that runs during plugin activation.
@@ -69,7 +69,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-wp-video-baker.php';
  * then kicking off the plugin from this point in the file does
  * not affect the page life cycle.
  *
- * @since    1.0.0
+ * @since    1.0
  */
 function run_wp_video_baker() {
 

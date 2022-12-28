@@ -2,7 +2,7 @@
 
 function get_google_fonts(){
 	
-	$f = json_decode(file_get_contents('https://wpvideobaker.com/api/fonts.php'),true)['items'];
+	$f = json_decode(file_get_contents('https://wpvideobaker.com/api/font_list.json'),true)['items'];
 	
 	foreach($f as $v){
 		
@@ -81,7 +81,7 @@ function create_buttons(){
 	$repeater = (isset(get_post_meta( get_the_ID(), 'videobaker_post', true )['video-section']) ? get_post_meta( get_the_ID(), 'videobaker_post', true )['video-section'] : false );
 	$options = get_option( 'video_baker_admin' );
 
-	//echo "<div>". ($repeater && (check_license() != 400 && check_license() != 500) ? "<input type='button' value='Generate Video' id='gen_video' style='color:white; background: #10393B; border:unset; cursor:pointer; font-size: 16px; padding: 5px 15px; margin-right:15px; border-radius:3px; ' data-api='".$options['license']."' data-id='".get_the_ID()."'/>" : '<div class="csf-field-notice apikeynotice"><div class="csf-notice csf-notice-danger">In order to start creating videos please insert correct API KEY.</div></div></div>' );
+	
 	echo "<div>";
 	if($repeater){
 		if(check_license() != 400 && check_license() != 500){
@@ -100,17 +100,16 @@ function create_buttons(){
 
 
 function send_data() {
-
-		$ch = curl_init('https://wpvideobaker.com/api/add_to_db.php');
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json','x-api-key:'.$_POST['api']));
-		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(array(get_post_meta($_POST['id'],'videobaker_post'),get_option( 'video_baker_admin' ))));
-
-		$response = curl_exec($ch);
-
-		echo $response;
+	
+		$args = array(
+			'body'        => json_encode(array(get_post_meta($_POST['id'],'videobaker_post'),get_option( 'video_baker_admin' ))),
+			'headers'     => array('Content-Type' => 'application/json','Authorization' => $_POST['api']),
+			'timeout'     => '60',
+		);
 		
-		curl_close($ch);
+		$response = wp_remote_post( 'https://wpvideobaker.com/api/add_to_db.php', $args );
+
+		echo $response['body'];
 			
 		wp_die(); 
 		
@@ -140,19 +139,18 @@ function generate_preview(){ ?>
 <?php }
 
 function preview_data() {
-
-
-	$ch = curl_init('https://wpvideobaker.com/api/generate_preview.php');
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
-	curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(array(get_post_meta(get_the_ID(),'videobaker_post'),get_option( 'video_baker_admin' ))));
-
-	$response = curl_exec($ch);
 	
-	curl_close($ch);
+	$args = array(
+		'body'        => json_encode(array(get_post_meta(get_the_ID(),'videobaker_post'),get_option( 'video_baker_admin' ))),
+		'headers'     => array('Content-Type:application/json'),
+		'timeout'     => '60',
+	);
+	
+	$response = wp_remote_post( 'https://wpvideobaker.com/api/generate_preview.php', $args );
+	
 ?>
 	<script>
-		const preview_data = <?php echo $response; ?>;
+		const preview_data = <?php echo $response['body']; ?>;
 	</script>
 <?php }
 add_action( 'admin_head', 'preview_data' );
