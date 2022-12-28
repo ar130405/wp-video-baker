@@ -46,6 +46,8 @@ function welcome_window() {
 	$options = get_option( 'video_baker_admin' );
 
 	?>
+		
+	<iframe width="800" height="500" style="margin: 50px 0; " src="https://www.youtube.com/embed/wtvV5Ss8td4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 	
 	<script>
 	
