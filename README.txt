@@ -38,6 +38,10 @@ Most of the video is built from video content sections. There are three types: l
 = Get In Touch! =
 
 * Website: [WPVideoBaker.com](https://wpvideobaker.com/)
+* Terms of use: [WPVideoBaker Terms of use](https://wpvideobaker.com/terms-of-use/)
+* Privacy Policy: [WPVideoBaker Privacy Policy](https://wpvideobaker.com/privacy-policy/)
+
+
 
 
 == Installation ==

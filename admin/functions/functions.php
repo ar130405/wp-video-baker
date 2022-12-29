@@ -2,7 +2,9 @@
 
 function get_google_fonts(){
 	
-	$f = json_decode(file_get_contents('https://wpvideobaker.com/api/font_list.json'),true)['items'];
+	$response = wp_remote_post( 'https://wpvideobaker.com/api/font_list.json');
+	
+	$f = json_decode($response['body'],true)['items'];
 	
 	foreach($f as $v){
 		
@@ -16,9 +18,9 @@ function get_google_fonts(){
 }
 function get_google_voices(){
 	
-	$lang = file_get_contents('https://wpvideobaker.com/api/functions/lang.csv');
+	$lang = wp_remote_post('https://wpvideobaker.com/api/functions/lang.csv');
 	
-	$langex = explode(',',$lang);
+	$langex = explode(',',$lang['body']);
 	foreach($langex as $l ){
 		$ex = explode(':',$l);
 		$chars = array("\r\n", '\\n', '\\r', "\n", "\r", "\t", "\0", "\x0B");
@@ -28,7 +30,7 @@ function get_google_voices(){
 		}
 	}
 	
-	$vl = json_decode(file_get_contents('https://wpvideobaker.com/api/functions/voices.json'),true)['voices'];
+	$vl = json_decode(wp_remote_post('https://wpvideobaker.com/api/functions/voices.json')['body'],true)['voices'];
 	foreach($vl as $v){
 		$ex = explode('-',$v['name']);
 		if(isset($langarr[$ex[0].'-'.strtolower($ex[1])])){
@@ -46,7 +48,7 @@ function welcome_window() {
 	$options = get_option( 'video_baker_admin' );
 
 	?>
-		
+	
 	<iframe width="800" height="500" style="margin: 50px 0; " src="https://www.youtube.com/embed/wtvV5Ss8td4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 	
 	<script>
@@ -73,8 +75,8 @@ function welcome_window() {
 function check_license() {
 
 	$options = get_option( 'video_baker_admin' );
-	$status = file_get_contents('https://wpvideobaker.com/api/checkuser.php/?key='.$options['license']);
-	return $status;
+	$status = wp_remote_post('https://wpvideobaker.com/api/checkuser.php/?key='.$options['license']);
+	return $status['body'];
 
 }
 
@@ -105,7 +107,7 @@ function send_data() {
 	
 		$args = array(
 			'body'        => json_encode(array(get_post_meta($_POST['id'],'videobaker_post'),get_option( 'video_baker_admin' ))),
-			'headers'     => array('Content-Type' => 'application/json','Authorization' => $_POST['api']),
+			'headers'     => array('Content-Type' => 'application/json','Authorization' => sanitize_text_field($_POST['api'])),
 			'timeout'     => '60',
 		);
 		
