@@ -41,7 +41,7 @@
 		var api = $('#gen_video').attr('data-api');
 		
 		var data = {
-			'action': 'send_data',
+			'action': 'vbaker_send_data',
 			'id': id,
 			'api': api,
 		};

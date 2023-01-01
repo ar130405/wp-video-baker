@@ -84,22 +84,31 @@ function create_buttons(){
 
 	$repeater = (isset(get_post_meta( get_the_ID(), 'videobaker_post', true )['video-section']) ? get_post_meta( get_the_ID(), 'videobaker_post', true )['video-section'] : false );
 	$options = get_option( 'video_baker_admin' );
-
+	?>
 	
-	echo "<div>";
-	if($repeater){
-		if(check_license() != 400 && check_license() != 500){
-			echo "<input type='button' value='Generate Video' id='gen_video' style='color:white; background: #10393B; border:unset; cursor:pointer; font-size: 16px; padding: 5px 15px; margin-right:15px; border-radius:3px; ' data-api='".$options['license']."' data-id='".get_the_ID()."'/>";
-		} else {
-			echo '<div class="csf-field-notice apikeynotice"><div class="csf-notice csf-notice-danger">Please check API KEY!</div></div>';
-		}
-	} else {
-		echo '<div class="csf-field-notice apikeynotice"><div class="csf-notice csf-notice-warning">Please add some video blocks. Save & reload the page in order to generate video.</div></div>';
-	}
-	echo "</div>";
-	echo "<img src='".plugin_dir_url( __FILE__ )."/assets/img/Spinner.gif' width='50' id='loading' />";
+	<div>
+	<?php if($repeater){ 
+		
+		if(check_license() != 400 && check_license() != 500){?>
+			<input type="button" value="Generate Video" id="gen_video" style="color:white; background: #10393B; border:unset; cursor:pointer; font-size: 16px; padding: 5px 15px; margin-right:15px; border-radius:3px;" data-api='<?php echo esc_html($options['license']); ?>' data-id="<?php echo esc_html(get_the_ID()); ?>" />
+		<?php } else { ?>
+			<div class="csf-field-notice apikeynotice">
+				<div class="csf-notice csf-notice-danger">Please check API KEY!</div>
+			</div>
+		<?php }
+		
+	} else { ?>
 	
-
+		<div class="csf-field-notice apikeynotice">
+			<div class="csf-notice csf-notice-warning">Please add some video blocks. Save & reload the page in order to generate video.</div>
+		</div>
+		
+	<?php } ?>
+	
+	</div>
+	<img src="<?php echo  esc_url(plugin_dir_url( __FILE__ )."/assets/img/Spinner.gif");  ?>" width='50' id='loading' />
+	
+	<?php 
 }
 
 
@@ -113,7 +122,7 @@ function send_data() {
 		
 		$response = wp_remote_post( 'https://wpvideobaker.com/api/add_to_db.php', $args );
 
-		echo $response['body'];
+		echo esc_html($response['body']);
 			
 		wp_die(); 
 		
@@ -124,6 +133,7 @@ function send_data() {
 add_action( 'wp_ajax_send_data', 'send_data' );
 
 function generate_preview(){ ?>
+
 	<?php if(isset(get_post_meta( get_the_ID(), 'videobaker_post', true )['video-section'])){ ?>
 	
 		<iframe
@@ -134,10 +144,6 @@ function generate_preview(){ ?>
 		  id="preview_iframe"
 		></iframe>
 		
-	<?php } else { ?>
-	
-		<img src='<?php echo plugin_dir_url( __FILE__ ); ?>/assets/img/Spinner.gif' width='50' id='loading' />
-	
 	<?php } ?>
 
 <?php }
@@ -154,7 +160,7 @@ function preview_data() {
 	
 ?>
 	<script>
-		const preview_data = <?php echo $response['body']; ?>;
+		const preview_data = <?php echo wp_kses_post($response['body']); ?>;
 	</script>
 <?php }
 add_action( 'admin_head', 'preview_data' );
