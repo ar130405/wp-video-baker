@@ -135,11 +135,11 @@ CSF::createSection( $prefix_post_opts, array(
 			),
 			array(
 			  'type'     => 'callback',
-			  'function' => 'generate_preview',
+			  'function' => 'vbaker_generate_preview',
 			),
 			array(
 			  'type'     => 'callback',
-			  'function' => 'create_buttons',
+			  'function' => 'vbaker_create_buttons',
 			),
 			
 			array(

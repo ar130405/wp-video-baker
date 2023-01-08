@@ -1,5 +1,5 @@
 <?php if ( ! defined( 'ABSPATH' )  ) { die; } // Cannot access directly.
-$fonts = get_google_fonts();
+$fonts = vbaker_get_google_fonts();
 
 
 $prefix = 'video_baker_admin';
@@ -23,7 +23,7 @@ CSF::createSection( $prefix, array(
 		'fields' => array(
 			array(
 				'type'     => 'callback',
-				'function' => 'welcome_window',
+				'function' => 'vbaker_welcome_window',
 			),
 			array(
 				'id'          => 'license',
@@ -154,7 +154,7 @@ CSF::createSection( $prefix, array(
 				'id'      => 'text-to-speech-language',
 				'title'   => esc_html__('Voice Overlay Language', 'video_baker' ),
 				'type'    => 'select',
-				'options' => get_google_voices(),
+				'options' => vbaker_get_google_voices(),
 				'chosen' => true,
 				'default' => 'en-US-Neural2-J|MALE',
 			),

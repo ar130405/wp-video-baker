@@ -30,8 +30,8 @@
 
 	$('body').on('click','#gen_video',function(){
 		
-			add_notice('warning','Please save all changes before sending video to render. Thank you.');
-			$('#gen_video').addClass('warning');
+		add_notice('warning','Please save all changes before sending video to render. Thank you.');
+		$('#gen_video').addClass('warning');
 		
 	});			
 			

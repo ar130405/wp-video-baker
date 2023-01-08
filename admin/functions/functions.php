@@ -1,6 +1,6 @@
 <?php if ( ! defined( 'ABSPATH' )  ) { die; } // Cannot access directly.
 
-function get_google_fonts(){
+function vbaker_get_google_fonts(){
 	
 	$response = wp_remote_post( 'https://wpvideobaker.com/api/font_list.json');
 	
@@ -16,7 +16,7 @@ function get_google_fonts(){
 	
 	return $fonts;
 }
-function get_google_voices(){
+function vbaker_get_google_voices(){
 	
 	$lang = wp_remote_post('https://wpvideobaker.com/api/functions/lang.csv');
 	
@@ -43,7 +43,7 @@ function get_google_voices(){
 	return $voices;
 }
 
-function welcome_window() {
+function vbaker_welcome_window() {
 
 	$options = get_option( 'video_baker_admin' );
 
@@ -53,15 +53,15 @@ function welcome_window() {
 	
 	<script>
 	
-		<?php if(check_license() == 367 || check_license() == 319 || check_license() == 320 || check_license() == 321){ ?>
+		<?php if(vbaker_check_license() == 367 || vbaker_check_license() == 319 || vbaker_check_license() == 320 || vbaker_check_license() == 321){ ?>
 			jQuery(window).on('load', function(){
 				jQuery("input[data-depend-id=license]").parent().append('<br/><span style="color:green">Account is Active.</span>');
 			});
-		<?php } else if(check_license() == 400){ ?>
+		<?php } else if(vbaker_check_license() == 400){ ?>
 			jQuery(window).on('load', function(){
 				jQuery("input[data-depend-id=license]").parent().append('<br/><span style="color:red">Your Account is Inactive. Please Check Profile Page.</span>');
 			});		
-		<?php } else if(check_license() == 500){?>
+		<?php } else if(vbaker_check_license() == 500){?>
 			jQuery(window).on('load', function(){
 				jQuery("input[data-depend-id=license]").parent().append('<br/><span style="color:red">Incorect API KEY.</span>');
 			});		
@@ -72,7 +72,7 @@ function welcome_window() {
 	<?php
 }
 
-function check_license() {
+function vbaker_check_license() {
 
 	$options = get_option( 'video_baker_admin' );
 	$status = wp_remote_post('https://wpvideobaker.com/api/checkuser.php/?key='.$options['license']);
@@ -80,16 +80,16 @@ function check_license() {
 
 }
 
-function create_buttons(){
+function vbaker_create_buttons(){
 
 	$repeater = (isset(get_post_meta( get_the_ID(), 'videobaker_post', true )['video-section']) ? get_post_meta( get_the_ID(), 'videobaker_post', true )['video-section'] : false );
 	$options = get_option( 'video_baker_admin' );
 	?>
 	
-	<div>
+	<div id="buttonsHolder_vbaker">
 	<?php if($repeater){ 
 		
-		if(check_license() != 400 && check_license() != 500){?>
+		if(vbaker_check_license() != 400 && vbaker_check_license() != 500){?>
 			<input type="button" value="Generate Video" id="gen_video" style="color:white; background: #10393B; border:unset; cursor:pointer; font-size: 16px; padding: 5px 15px; margin-right:15px; border-radius:3px;" data-api='<?php echo esc_html($options['license']); ?>' data-id="<?php echo esc_html(get_the_ID()); ?>" />
 		<?php } else { ?>
 			<div class="csf-field-notice apikeynotice">
@@ -112,7 +112,7 @@ function create_buttons(){
 }
 
 
-function send_data() {
+function vbaker_send_data() {
 	
 		$args = array(
 			'body'        => json_encode(array(get_post_meta($_POST['id'],'videobaker_post'),get_option( 'video_baker_admin' ))),
@@ -130,9 +130,9 @@ function send_data() {
 		
 }
 
-add_action( 'wp_ajax_send_data', 'send_data' );
+add_action( 'wp_ajax_vbaker_send_data', 'vbaker_send_data' );
 
-function generate_preview(){ ?>
+function vbaker_generate_preview(){ ?>
 
 	<?php if(isset(get_post_meta( get_the_ID(), 'videobaker_post', true )['video-section'])){ ?>
 	
@@ -148,7 +148,7 @@ function generate_preview(){ ?>
 
 <?php }
 
-function preview_data() {
+function vbaker_preview_data() {
 	
 	$args = array(
 		'body'        => json_encode(array(get_post_meta(get_the_ID(),'videobaker_post'),get_option( 'video_baker_admin' ))),
@@ -163,5 +163,5 @@ function preview_data() {
 		const preview_data = <?php echo wp_kses_post($response['body']); ?>;
 	</script>
 <?php }
-add_action( 'admin_head', 'preview_data' );
+add_action( 'admin_head', 'vbaker_preview_data' );
 
